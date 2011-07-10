@@ -63,7 +63,7 @@ class PtraceDrawWSSGraph {
 			svg.text(x:margins - 60,
 				y: (int)(5 + height * i/marks + margins),
 				style: "font-family: Helvetica; font-size:10; fill: maroon",
-				(Long.toString((int)(biggestP * i/marks), 10)))
+				(Long.toString((int)(biggestP - (biggestP * i/marks)), 10)))
 		}
 		
 		def yFact = height/biggestP
