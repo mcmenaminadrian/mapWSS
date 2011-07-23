@@ -6,18 +6,21 @@ class PtraceDrawWSSGraph {
 	/**
 	 * Draw the graph based on sampled points
 	 * 
-	 * @param listP
-	 * @param listS
-	 * @param width
-	 * @param height
-	 * @param marks
-	 * @param margins
-	 * @param maxSteps
-	 * @param maxPagesP
-	 * @param maxPagesS
+	 * @param listP  sampled number of pages in page table
+	 * @param listS  sampled number of swapped pages
+	 * @param listM  sampled number of pages mapped but not in page table
+	 * @param width  width of graph
+	 * @param height height of graph
+	 * @param marks  number of grid marks to draw
+	 * @param margins margins in graph
+	 * @param maxSteps total number of steps taken by program
+	 * @param maxPagesP maximum number of pages in page table
+	 * @param maxPagesS maximum number of swapped pages
+	 * @param maxPagesM maximum number of pages only mapped
 	 */
-	PtraceDrawWSSGraph(def listP, def listS, def width, def height, def marks,
-		def margins, def maxSteps, def maxPagesP, def maxPagesS)
+	PtraceDrawWSSGraph(def listP, def listS, def listM, def width,
+		def height, def marks, def margins, def maxSteps,
+		def maxPagesP, def maxPagesS, def maxPagesM)
 	{
 		def fileName = "SampledWSS${new Date().time.toString()}.svg"
 		def writer = new FileWriter(fileName)
@@ -42,6 +45,7 @@ class PtraceDrawWSSGraph {
 			stroke:"black", "stroke-width":10)
 		
 		def biggestP = maxPagesP > maxPagesS ? maxPagesP : maxPagesS
+		biggestP = biggestP > maxPagesM ? biggestP : maxPagesM
 		(0 .. marks).each { i ->
 			svg.line(x1:(int)(margins + width * i/marks),
 				y1:15 + height + margins,
@@ -70,22 +74,27 @@ class PtraceDrawWSSGraph {
 		def lastX = margins
 		def lastYP = margins + height
 		def lastYS = lastYP
+		def lastYM = lastYS
 		listP.eachWithIndex { value, i ->
 			def yPointP = margins + (height - value * yFact)
 			def yPointS = margins + (height - listS[i] * yFact)
+			def yPointM = margins + (height - listM[i] * yFact)
 			def xPoint = margins + i
 			svg.line(x1:lastX, y1:lastYP, x2: xPoint, y2: yPointP,
 				style:"fill:none; stroke:blue; stroke-width:1;") 
 			svg.line(x1:lastX, y1:lastYS, x2: xPoint, y2: yPointS,
 				style:"fill:none; stroke:red; stroke-width:1;")
+			svg.line(x1:lastX, y1:lastYM, x2: xPoint, y2: yPointM,
+				style:"fill:none; stroke:green; stroke-width:1;");
 			lastX = xPoint
 			lastYP = yPointP
 			lastYS = yPointS
+			lastYM = yPointM
 		}
-		svg.text(x:margins/4, y: height / 2,
-			transform:"rotate(270, ${margins/4}, ${height/2})",
+		svg.text(x:margins/4, y: height * 0.75,
+			transform:"rotate(270, ${margins/4}, ${height*0.75})",
 			style: "font-family: Helvetica; font-size:10; fill:red",
-			"Pages: red swapped, blue present")
+			"Pages: red swapped, blue in page table, green mapped only")
 		def strInst = "Steps"
 		svg.text(x:margins, y: height + margins * 1.5,
 				style: "font-family:Helvetica; font-size:10; fill:red",

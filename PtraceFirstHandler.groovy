@@ -10,9 +10,10 @@ class PtraceFirstHandler extends DefaultHandler {
 	def maxSteps = 0
 	def maxPagesP = 0
 	def maxPagesS = 0
+	def maxPagesM = 0
 	
 	/**
-	 * Simple, slow scan through the ptracexml file
+	 * Simple, slow scan through the ptracexml file - checking maxima
 	 * @param ns
 	 * @param localName
 	 * @param qName
@@ -32,7 +33,9 @@ class PtraceFirstHandler extends DefaultHandler {
 				def pagesS = Long.decode(attrs.getValue('swapped'))
 				if (pagesS > maxPagesS)
 					maxPagesS = pagesS
-		
+				def pagesM = Long.decode(attrs.getValue('maponly'))
+				if (pagesM > maxPagesM)
+					maxPagesM = pagesM
 			}
 	}
 	
