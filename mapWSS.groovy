@@ -29,7 +29,7 @@ class GraphWSS {
 		def listS = handler2.wssListS
 		def listM = handler2.wssListM
 		println("Drawing graph")
-		new PtraceDrawWSSGraph(listP, listS, ListM, width, height,
+		new PtraceDrawWSSGraph(listP, listS, listM, width, height,
 			marks, margins, maxSteps, maxPagesP,
 			maxPagesS, maxPagesM);
 	}
