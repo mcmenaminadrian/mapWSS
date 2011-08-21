@@ -8,7 +8,7 @@ class PtraceDrawWSSGraph {
 	 * 
 	 * @param listP  sampled number of pages in page table
 	 * @param listS  sampled number of swapped pages
-	 * @param listM  sampled number of pages mapped but not in page table
+	 * @param listM  sampled number of pages present but not in page table
 	 * @param width  width of graph
 	 * @param height height of graph
 	 * @param marks  number of grid marks to draw
@@ -16,7 +16,7 @@ class PtraceDrawWSSGraph {
 	 * @param maxSteps total number of steps taken by program
 	 * @param maxPagesP maximum number of pages in page table
 	 * @param maxPagesS maximum number of swapped pages
-	 * @param maxPagesM maximum number of pages only mapped
+	 * @param maxPagesM maximum number of pages only present
 	 */
 	PtraceDrawWSSGraph(def listP, def listS, def listM, def width,
 		def height, def marks, def margins, def maxSteps,
@@ -94,7 +94,7 @@ class PtraceDrawWSSGraph {
 		svg.text(x:margins/4, y: height * 0.75,
 			transform:"rotate(270, ${margins/4}, ${height*0.75})",
 			style: "font-family: Helvetica; font-size:10; fill:red",
-			"Pages: red swapped, blue in page table, green mapped only")
+			"Pages: red swapped, blue in page table, green present only")
 		def strInst = "Steps"
 		svg.text(x:margins, y: height + margins * 1.5,
 				style: "font-family:Helvetica; font-size:10; fill:red",
