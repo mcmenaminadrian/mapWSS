@@ -34,7 +34,7 @@ class PtraceSecondHandler extends DefaultHandler {
 					if (stepsMade >= sampleRate){
 						wssListP << Long.decode(attrs.getValue('present'))
 						wssListS << Long.decode(attrs.getValue('swapped'))
-						wssListM << Long.decode(attrs.getValue('maponly'))
+						wssListM << Long.decode(attrs.getValue('presonly'))
 						stepsMade = 0
 					}
 			}

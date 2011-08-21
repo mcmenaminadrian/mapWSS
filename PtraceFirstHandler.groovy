@@ -33,10 +33,9 @@ class PtraceFirstHandler extends DefaultHandler {
 				def pagesS = Long.decode(attrs.getValue('swapped'))
 				if (pagesS > maxPagesS)
 					maxPagesS = pagesS
-				def pagesM = Long.decode(attrs.getValue('maponly'))
+				def pagesM = Long.decode(attrs.getValue('presonly'))
 				if (pagesM > maxPagesM)
 					maxPagesM = pagesM
 			}
 	}
-	
 }
