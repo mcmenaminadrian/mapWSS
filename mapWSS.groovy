@@ -6,7 +6,7 @@ import org.xml.sax.*
 
 class GraphWSS {
 
-	GraphWSS(def iFile, width, height, marks, margins)
+	GraphWSS(def iFile, width, height, marks, margins, showFaults)
 	{
 		println("Beginning first pass")
 		def handler = new PtraceFirstHandler()
@@ -17,6 +17,7 @@ class GraphWSS {
 		def maxSteps = handler.maxSteps
 		def maxPagesP = handler.maxPagesP
 		def maxPagesS = handler.maxPagesS
+		def maxPagesR = handler.maxPagesR
 		def sampleRate = (int) maxSteps/width
 		println("Beginning second pass")
 		def handler2 = new PtraceSecondHandler(sampleRate)
@@ -25,13 +26,30 @@ class GraphWSS {
 		
 		def listP = handler2.wssListP
 		def listS = handler2.wssListS
+		def listR = handler2.wssListR
 		println("Drawing graph")
-		new PtraceDrawWSSGraph(listP, listS, width, height, marks, margins,
-			maxSteps, maxPagesP, maxPagesS);
-		
+		new PtraceDrawWSSGraph(listP, listS, listR, width, height, marks,
+			margins, maxSteps, maxPagesP, maxPagesS, maxPagesR);
+		if (showFaults) {
+			println("Finding maxima of hard and soft faults")
+			def handler3 = new PtraceThirdHandler()
+			reader.setContentHandler(handler3)
+			reader.parse(new InputSource(new FileInputStream(iFile)))
+			def maxSoft = handler3.maxSoft
+			def maxHard = handler3.maxHard
+			println("Sampling fault count")
+			def handler4 = new PtraceFourthHandler(sampleRate)
+			reader.setContentHandler(handler4)
+			reader.parse(new InputSource(new FileInputStream(iFile)))
+			def softList = handler4.softList
+			def hardList = handler4.hardList
+			new PtraceDrawFaultGraph(softList, hardList, width, height, marks,
+				margins, maxSteps, maxSoft, maxHard)
+		}
 	}
-	
+		
 }
+
 
 
 def ptraceCli = new CliBuilder
@@ -44,11 +62,13 @@ ptraceCli.u(longOpt: 'usage', 'prints this information')
 ptraceCli.m(longOpt: 'gridmarks', args: 1, 'grid marks on graph - default 4')
 ptraceCli.b(longOpt: 'margins', args: 1,
 	'margin size on graphs (default 100px)')
+ptraceCli.f(longOpt: 'faults', 'graph soft and hard faults')
 
 def width = 800
 def height = 600
 def marks = 4
 def margins = 100
+def showFaults = false
 
 def pAss = ptraceCli.parse(args)
 if (pAss.u || args.size() == 0) {
@@ -62,9 +82,11 @@ if (pAss.u || args.size() == 0) {
 		marks = Integer.parseInt(pAss.m)
 	if (pAss.b)
 		margins = Integer.parseInt(pAss.b)
+	if (pAss.f)
+		showFaults = true
 
 	def gWSS = new GraphWSS(args[args.size() -1], width, height, marks,
-		margins)
+		margins, showFaults)
 }
 
 

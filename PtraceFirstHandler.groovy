@@ -9,6 +9,7 @@ class PtraceFirstHandler extends DefaultHandler {
 
 	def maxSteps = 0
 	def maxPagesP = 0
+	def maxPagesR = 0
 	def maxPagesS = 0
 	
 	/**
@@ -32,7 +33,9 @@ class PtraceFirstHandler extends DefaultHandler {
 				def pagesS = Long.decode(attrs.getValue('swapped'))
 				if (pagesS > maxPagesS)
 					maxPagesS = pagesS
-		
+				def pagesR = Long.decode(attrs.getValue('presonly'))
+				if (pagesR > maxPagesR)
+					maxPagesR = pagesR
 			}
 	}
 	

@@ -1,27 +1,25 @@
 import groovy.xml.MarkupBuilder
 
 
-class PtraceDrawWSSGraph {
+class PtraceDrawFaultGraph {
 
 	/**
 	 * Draw the graph based on sampled points
 	 * 
-	 * @param listP
-	 * @param listS
+	 * @param softList
+	 * @param hardList
 	 * @param width
 	 * @param height
 	 * @param marks
 	 * @param margins
 	 * @param maxSteps
-	 * @param maxPagesP
-	 * @param maxPagesS
-	 * @param maxPagesR
+	 * @param maxSoft
+	 * @param maxHard
 	 */
-	PtraceDrawWSSGraph(def listP, def listS, def listR, def width, def height,
-		 def marks, def margins, def maxSteps, def maxPagesP, def maxPagesS,
-		 def maxPagesR)
+	PtraceDrawWSSGraph(def softList, def hardList, def width, def height, def marks,
+		def margins, def maxSteps, def maxSoft, def maxHard)
 	{
-		def fileName = "SampledWSS${new Date().time.toString()}.svg"
+		def fileName = "SampledFault${new Date().time.toString()}.svg"
 		def writer = new FileWriter(fileName)
 		println("Writing $fileName")
 		def svg = new MarkupBuilder(writer)
@@ -42,9 +40,7 @@ class PtraceDrawWSSGraph {
 		svg.line(x1:margins - 5, y1: height + margins + 5,
 			x2: margins - 5, y2: margins,
 			stroke:"black", "stroke-width":10)
-		if (maxPagesR > maxPagesP)
-			maxPagesP = maxPagesR
-		def biggestP = maxPagesP > maxPagesS ? maxPagesP : maxPagesS
+		def biggestP = maxSoft > maxHard ? maxSoft : maxHard
 		(0 .. marks).each { i ->
 			svg.line(x1:(int)(margins + width * i/marks),
 				y1:15 + height + margins,
@@ -73,22 +69,17 @@ class PtraceDrawWSSGraph {
 		def lastX = margins
 		def lastYP = margins + height
 		def lastYS = lastYP
-		def lastYR = lastYS
-		listP.eachWithIndex { value, i ->
-			def yPointP = margins + (height - value * yFact)
-			def yPointS = margins + (height - listS[i] * yFact)
-			def yPointR = margins + (height - listR[i] * yFact)
+		softList.eachWithIndex { value, i ->
+			def yPointSoft = margins + (height - value * yFact)
+			def yPointHard = margins + (height - hardList[i] * yFact)
 			def xPoint = margins + i
-			svg.line(x1:lastX, y1:lastYP, x2: xPoint, y2: yPointP,
+			svg.line(x1:lastX, y1:lastYP, x2: xPoint, y2: yPointSoft,
 				style:"fill:none; stroke:blue; stroke-width:1;") 
-			svg.line(x1:lastX, y1:lastYS, x2: xPoint, y2: yPointS,
+			svg.line(x1:lastX, y1:lastYS, x2: xPoint, y2: yPointHard,
 				style:"fill:none; stroke:red; stroke-width:1;")
-			svg.line(x1:lastX, y1:lastYR, x2: xPoint, y2: yPointR,
-				style:"fill:none; stroke:green; stroke-width:1;");
 			lastX = xPoint
-			lastYP = yPointP
-			lastYS = yPointS
-			lastYR = yPointR
+			lastYP = yPointSoft
+			lastYS = yPointHard
 		}
 		svg.text(x:margins/4, y: height / 2,
 			transform:"rotate(270, ${margins/4}, ${height/2})",

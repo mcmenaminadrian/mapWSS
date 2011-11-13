@@ -1,18 +1,15 @@
-import org.xml.sax.Attributes;
-
-
 import javax.xml.parsers.SAXParserFactory
 import org.xml.sax.helpers.DefaultHandler
 import org.xml.sax.*
 
-class PtraceSecondHandler extends DefaultHandler {
+class PtraceFourthHandler extends DefaultHandler {
 
-	List wssListP = []
-	List wssListS = []
+	List softList = []
+	List hardList = []
 	def sampleRate
 	def stepsMade = 0
 	
-	PtraceSecondHandler(def sampleRate)
+	PtraceFourthHandler(def sampleRate)
 	{
 		super()
 		this.sampleRate = sampleRate
@@ -28,12 +25,11 @@ class PtraceSecondHandler extends DefaultHandler {
 	void startElement(String ns, String localName, String qName,
 		Attributes attrs) {
 			switch(qName) {
-				case 'trace':
+				case 'faults':
 					stepsMade++
 					if (stepsMade >= sampleRate){
-						wssListP << Long.decode(attrs.getValue('present'))
-						wssListS << Long.decode(attrs.getValue('swapped'))
-						wssListR << Long.decode(attrs.getValue('presonly'))
+						softList << Long.decode(attrs.getValue('soft'))
+						hardList << Long.decode(attrs.getValue('hard'))
 						stepsMade = 0
 					}
 			}
