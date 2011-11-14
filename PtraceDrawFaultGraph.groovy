@@ -84,7 +84,7 @@ class PtraceDrawFaultGraph {
 		svg.text(x:margins/4, y: height / 2,
 			transform:"rotate(270, ${margins/4}, ${height/2})",
 			style: "font-family: Helvetica; font-size:10; fill:red",
-			"Pages: red swapped, blue present")
+			"Faults: red hard, blue soft")
 		def strInst = "Steps"
 		svg.text(x:margins, y: height + margins * 1.5,
 				style: "font-family:Helvetica; font-size:10; fill:red",

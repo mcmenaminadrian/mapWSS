@@ -43,10 +43,9 @@ class PtraceDrawWSSGraph {
 		svg.line(x1:margins - 5, y1: height + margins + 5,
 			x2: margins - 5, y2: margins,
 			stroke:"black", "stroke-width":10)
-		if (maxPagesR > maxPagesP)
-			maxPagesP = maxPagesR
+		
 		def biggestP = maxPagesP > maxPagesS ? maxPagesP : maxPagesS
-		biggestP = biggestP > maxPagesM ? biggestP : maxPagesM
+		biggestP = biggestP > maxPagesR ? biggestP : maxPagesR
 		(0 .. marks).each { i ->
 			svg.line(x1:(int)(margins + width * i/marks),
 				y1:15 + height + margins,
