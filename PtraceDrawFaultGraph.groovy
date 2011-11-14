@@ -16,7 +16,7 @@ class PtraceDrawFaultGraph {
 	 * @param maxSoft
 	 * @param maxHard
 	 */
-	PtraceDrawWSSGraph(def softList, def hardList, def width, def height, def marks,
+	PtraceDrawFaultGraph(def softList, def hardList, def width, def height, def marks,
 		def margins, def maxSteps, def maxSoft, def maxHard)
 	{
 		def fileName = "SampledFault${new Date().time.toString()}.svg"
