@@ -18,11 +18,7 @@ class GraphWSS {
 		def maxSteps = handler.maxSteps
 		def maxPagesP = handler.maxPagesP
 		def maxPagesS = handler.maxPagesS
-<<<<<<< HEAD
 		def maxPagesR = handler.maxPagesR
-=======
-		def maxPagesM = handler.maxPagesM
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
 		def sampleRate = (int) maxSteps/width
 		println("Beginning second pass")
 		def handler2 = new PtraceSecondHandler(sampleRate)
@@ -31,7 +27,6 @@ class GraphWSS {
 		
 		def listP = handler2.wssListP
 		def listS = handler2.wssListS
-<<<<<<< HEAD
 		def listR = handler2.wssListR
 		println("Drawing graph")
 		new PtraceDrawWSSGraph(listP, listS, listR, width, height, marks,
@@ -52,13 +47,6 @@ class GraphWSS {
 			new PtraceDrawFaultGraph(softList, hardList, width, height, marks,
 				margins, maxSteps, maxSoft, maxHard)
 		}
-=======
-		def listM = handler2.wssListM
-		println("Drawing graph")
-		new PtraceDrawWSSGraph(listP, listS, listM, width, height,
-			marks, margins, maxSteps, maxPagesP,
-			maxPagesS, maxPagesM);
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
 	}
 		
 }
@@ -101,6 +89,3 @@ if (pAss.u || args.size() == 0) {
 	def gWSS = new GraphWSS(args[args.size() -1], width, height, marks,
 		margins, showFaults)
 }
-
-
-	

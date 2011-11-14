@@ -6,25 +6,9 @@ class PtraceDrawWSSGraph {
 	/**
 	 * Draw the graph based on sampled points
 	 * 
-<<<<<<< HEAD
-	 * @param listP
-	 * @param listS
-	 * @param width
-	 * @param height
-	 * @param marks
-	 * @param margins
-	 * @param maxSteps
-	 * @param maxPagesP
-	 * @param maxPagesS
-	 * @param maxPagesR
-	 */
-	PtraceDrawWSSGraph(def listP, def listS, def listR, def width, def height,
-		 def marks, def margins, def maxSteps, def maxPagesP, def maxPagesS,
-		 def maxPagesR)
-=======
 	 * @param listP  sampled number of pages in page table
 	 * @param listS  sampled number of swapped pages
-	 * @param listM  sampled number of pages present but not in page table
+	 * @param listR  sampled number of pages present but not in page table
 	 * @param width  width of graph
 	 * @param height height of graph
 	 * @param marks  number of grid marks to draw
@@ -32,12 +16,11 @@ class PtraceDrawWSSGraph {
 	 * @param maxSteps total number of steps taken by program
 	 * @param maxPagesP maximum number of pages in page table
 	 * @param maxPagesS maximum number of swapped pages
-	 * @param maxPagesM maximum number of pages only present
+	 * @param maxPagesR maximum number of pages only present
 	 */
-	PtraceDrawWSSGraph(def listP, def listS, def listM, def width,
-		def height, def marks, def margins, def maxSteps,
-		def maxPagesP, def maxPagesS, def maxPagesM)
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
+	PtraceDrawWSSGraph(def listP, def listS, def listR, def width, def height,
+		 def marks, def margins, def maxSteps, def maxPagesP, def maxPagesS,
+		 def maxPagesR)
 	{
 		def fileName = "SampledWSS${new Date().time.toString()}.svg"
 		def writer = new FileWriter(fileName)
@@ -92,38 +75,22 @@ class PtraceDrawWSSGraph {
 		def lastX = margins
 		def lastYP = margins + height
 		def lastYS = lastYP
-<<<<<<< HEAD
 		def lastYR = lastYS
 		listP.eachWithIndex { value, i ->
 			def yPointP = margins + (height - value * yFact)
 			def yPointS = margins + (height - listS[i] * yFact)
 			def yPointR = margins + (height - listR[i] * yFact)
-=======
-		def lastYM = lastYS
-		listP.eachWithIndex { value, i ->
-			def yPointP = margins + (height - value * yFact)
-			def yPointS = margins + (height - listS[i] * yFact)
-			def yPointM = margins + (height - listM[i] * yFact)
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
 			def xPoint = margins + i
 			svg.line(x1:lastX, y1:lastYP, x2: xPoint, y2: yPointP,
 				style:"fill:none; stroke:blue; stroke-width:1;") 
 			svg.line(x1:lastX, y1:lastYS, x2: xPoint, y2: yPointS,
 				style:"fill:none; stroke:red; stroke-width:1;")
-<<<<<<< HEAD
 			svg.line(x1:lastX, y1:lastYR, x2: xPoint, y2: yPointR,
-=======
-			svg.line(x1:lastX, y1:lastYM, x2: xPoint, y2: yPointM,
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
 				style:"fill:none; stroke:green; stroke-width:1;");
 			lastX = xPoint
 			lastYP = yPointP
 			lastYS = yPointS
-<<<<<<< HEAD
 			lastYR = yPointR
-=======
-			lastYM = yPointM
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
 		}
 		svg.text(x:margins/4, y: height * 0.75,
 			transform:"rotate(270, ${margins/4}, ${height*0.75})",

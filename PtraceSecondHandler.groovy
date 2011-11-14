@@ -9,7 +9,7 @@ class PtraceSecondHandler extends DefaultHandler {
 
 	List wssListP = []
 	List wssListS = []
-	List wssListM = []
+	List wssListR = []
 	def sampleRate
 	def stepsMade = 0
 	
@@ -34,11 +34,7 @@ class PtraceSecondHandler extends DefaultHandler {
 					if (stepsMade >= sampleRate){
 						wssListP << Long.decode(attrs.getValue('present'))
 						wssListS << Long.decode(attrs.getValue('swapped'))
-<<<<<<< HEAD
 						wssListR << Long.decode(attrs.getValue('presonly'))
-=======
-						wssListM << Long.decode(attrs.getValue('presonly'))
->>>>>>> 5cde9ec0623ada4a2613e68eb84cb0846b841ef2
 						stepsMade = 0
 					}
 			}
